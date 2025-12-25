@@ -16,16 +16,17 @@ module.exports = {
       PORT: 3001,
       HOSTNAME: '0.0.0.0',
       // API URL через nginx (порт 80) - замените YOUR_SERVER_IP на IP вашего сервера
+      // ВАЖНО: Указывайте URL через nginx, НЕ напрямую на порт backend!
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://YOUR_SERVER_IP/api',
-      // Base path для работы через nginx (если используете /super-admin путь)
-      NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || ''
+      // Base path для работы через nginx - ОБЯЗАТЕЛЬНО '/super-admin' для production
+      NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || '/super-admin'
     },
     env_production: {
       NODE_ENV: 'production',
       PORT: 3001,
       HOSTNAME: '0.0.0.0',
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://YOUR_SERVER_IP/api',
-      NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || ''
+      NEXT_PUBLIC_BASE_PATH: process.env.NEXT_PUBLIC_BASE_PATH || '/super-admin'
     },
     // Logging
     error_file: './logs/pm2-error.log',

@@ -1,10 +1,16 @@
 import { API_CONFIG } from "./config"
 import { getAccessToken } from "./auth"
 
-// Обновляем URL для WebSocket
+// WebSocket URL - использует тот же домен что и API (через nginx)
+// Если API_URL = http://domain/api, то WS_URL = ws://domain/ws
 const getWsUrl = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_WS_URL || API_CONFIG.baseUrl || 'http://localhost:8081';
-  return baseUrl.replace('http://', 'ws://').replace('https://', 'wss://');
+  // Используем NEXT_PUBLIC_API_URL и заменяем /api на /ws
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || API_CONFIG.baseUrl || 'http://localhost/api';
+  // Преобразуем http://domain/api -> ws://domain/ws
+  // Убираем /api в конце, добавляем /ws, меняем протокол
+  const baseUrl = apiUrl.replace(/\/api\/?$/, ''); // Убираем /api
+  const wsUrl = baseUrl.replace('http://', 'ws://').replace('https://', 'wss://') + '/ws';
+  return wsUrl;
 }
 
 export type StationStatus = {
@@ -39,8 +45,10 @@ export class WebSocketClient {
     }
 
     try {
+      // getWsUrl() уже возвращает правильный ws://domain/ws (без /ws в конце)
+      // Поэтому просто добавляем query параметры
       const wsBaseUrl = getWsUrl();
-      const wsUrl = `${wsBaseUrl}/ws?token=${token}`;
+      const wsUrl = `${wsBaseUrl}?token=${token}`;
       this.ws = new WebSocket(wsUrl)
 
       this.ws.onopen = () => {
