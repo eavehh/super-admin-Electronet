@@ -19,6 +19,12 @@ npm run build
 # Создать директорию для логов
 mkdir -p logs
 
+# Проверить что standalone билд существует
+if [ ! -f ".next/standalone/server.js" ]; then
+    echo "⚠️  Standalone build не найден. Пересобираю проект..."
+    npm run build
+fi
+
 # Запустить через PM2
 echo "🚀 Запуск через PM2..."
 pm2 start ecosystem.config.js

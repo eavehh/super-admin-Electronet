@@ -4,8 +4,8 @@
 module.exports = {
   apps: [{
     name: 'super-admin',
-    script: 'npm',
-    args: 'run start',
+    script: 'node',
+    args: '.next/standalone/server.js',
     instances: 1,
     exec_mode: 'fork',
     autorestart: true,
