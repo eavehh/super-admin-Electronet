@@ -3,7 +3,9 @@
 
 import { API_CONFIG } from './config';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || API_CONFIG.baseUrl || 'http://localhost:8081';
+// Используем NEXT_PUBLIC_API_URL из env (устанавливается через nginx)
+// Default: через nginx на порту 80 (замените YOUR_SERVER_IP на IP вашего сервера)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || API_CONFIG.baseUrl || 'http://YOUR_SERVER_IP/api';
 
 export interface ApiResponse<T = any> {
   success: boolean;
